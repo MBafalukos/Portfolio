@@ -8,7 +8,8 @@ export default {
     extend: {
       fontFamily : {
         "Montserrat" : ['Montserrat' ] ,
-        "Oswald" : ['Oswald']
+        "Oswald" : ['Oswald'],
+        
 
       }
       
