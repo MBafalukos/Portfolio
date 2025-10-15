@@ -9,7 +9,7 @@ export default {
       fontFamily : {
         "Montserrat" : ['Montserrat' ] ,
         "Oswald" : ['Oswald'],
-        
+        "Notable": ['Notable'],
 
       }
       

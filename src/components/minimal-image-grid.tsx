@@ -1,551 +1,681 @@
 import { TfiLinkedin } from "react-icons/tfi";
-import CV from "../assets/CV-en.pdf";
 import { motion } from "framer-motion";
 import { FiDownload } from "react-icons/fi";
-import { Card, CardContent } from "@/components/ui/card";
-import { MdLocationSearching } from "react-icons/md";
-import { TbSql } from "react-icons/tb";
+import { CiGlobe } from "react-icons/ci";
+import { Spinner } from "@/components/ui/spinner";
+
+import { SlOptions } from "react-icons/sl";
+import { Button } from "./ui/button";
+
+import { IoChatboxEllipsesOutline } from "react-icons/io5";
+import CV from "../assets/CV-en.pdf";
+import { Card, CardHeader, CardFooter } from "./ui/card";
 import { FaWordpress } from "react-icons/fa6";
 import { FaPython } from "react-icons/fa";
-import { useEffect } from "react";
-import headericon from "../assets/components.svg";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { BsDot } from "react-icons/bs";
+import * as React from "react";
+import { FiMail } from "react-icons/fi";
+
+import { useMediaQuery } from "@custom-react-hooks/use-media-query";
+
 import { FaDatabase } from "react-icons/fa";
-import { IoLogoJavascript } from "react-icons/io5";
+
 import { FaHtml5 } from "react-icons/fa";
 import { FaAws } from "react-icons/fa";
 
 import { FaGithub } from "react-icons/fa";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
-import { Badge } from "./ui/badge";
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../components/ui/dialog";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "./ui/drawer";
+
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 function Portfolio() {
   useEffect(() => {
     AOS.init();
   }, []);
+
+  const sectionRef = useRef(null);
+  const [open1, setOpen1] = React.useState(false);
+  const [open2, setOpen2] = React.useState(false);
+  const [open3, setOpen3] = React.useState(false);
+  const [open4, setOpen4] = React.useState(false);
+  const isDesktop = useMediaQuery("(min-width: 768px)");
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        el,
+        {
+          backgroundSize: "100% auto",
+        },
+        {
+          backgroundSize: "250% auto",
+
+          ease: "none",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top top", // element enters viewport
+            end: "bottom top",
+            scrub: 1,
+            pin: true,
+          },
+        }
+      );
+    }, sectionRef);
+
+    ScrollTrigger.refresh();
+
+    return () => ctx.revert();
+  }, []);
   return (
     /* All Content */
 
-    <div className=" flex  overflow-y-scroll overflow-x-hidden bg-black items-center ">
+    <div className=" flex flex-col  overflow-x-hidden bg-black items-center  ">
       {/*  Header */}
-
-      <div className="fixed  top-0 z-50 w-full lg:hidden overflow-x-hidden justify-center flex   ">
-        <div className=" items-center flex  backdrop-blur-xl rounded-b-2xl     ">
+      <div>
+        <p className=" fixed top-0 left-0  font-bold  text-xl lg:text-2xl xl:text-3xl p-5 xl:p-10 z-0 ">
           <a
-            href="#About"
-            className="md:mx-10 mx-6 my-5 text-xl transition-all hover:scale-105 text-zinc-300  "
+            href="mailto:m.bafalukos@gmail.com"
+            className="flex items-center gap-x-2 font-Oswald text-white text-base lg:text-2xl"
           >
-            <div className="flex items-center">
-              <img src={headericon} className="hidden lg:block" />
-              <p className="lg:pl-20">About</p>
-            </div>
+            Let's Talk
+            <IoChatboxEllipsesOutline color="white" />
           </a>
-          <a
-            href="#Projects"
-            className="md:mx-10 mx-6 my-5 text-xl  transition-all hover:scale-105 text-zinc-300 "
-          >
-            <p>Projects</p>
-          </a>
-          <a
-            href="#Contact"
-            className="md:mx-10 mx-6 my-5 text-xl  transition-all hover:scale-105 text-zinc-300  "
-          >
-            <div className="flex items-center">
-              <p className="lg:pr-20 ">Contact</p>
-              <img src={headericon} className="hidden lg:block" />
-            </div>
-          </a>
-        </div>
+        </p>
       </div>
 
       {/* Main Content */}
-      <div className="flex flex-col  items-center justify-center w-full ">
-        <div className="flex justify-center h-screen ">
-          <div id="About" className="font-semibold font-Montserrat w-full   ">
-            {/* About */}
-            <div className=" my-24">
-              <div className=" lg:mx-28 text-4xl  flex flex-col xl:flex-row">
-                <div className="flex flex-col xl:flex-row  w-full items-center xl:items-baseline justify-center">
-                  <Avatar className="w-40 h-40  shadow-[0_0_15px_#facc15] ">
-                    <AvatarImage src="https://github.com/shadcn.png" />
-                    <AvatarFallback>CN</AvatarFallback>
-                  </Avatar>
-                  <div className="flex flex-col w-full lg:p-10 pt-10 ">
-                    <div className=" text-center xl:text-start  ">
-                      <p className="md:text-7xl text-5xl lg:text-8xl xl:text-9xl font-bold w-full  text-[#EE7319] drop-shadow-[0_0_6px_rgba(255,0,150,0.8)] ">
-                        Hi.I'm Mike
-                      </p>
-                      <p className=" md:text-7xl text-5xl lg:text-8xl xl:text-9xl font-bold w-full text-yellow-200 drop-shadow-[0_0_6px_rgba(255,0,150,0.8)] ">
-                        A Designer
-                      </p>
-                    </div>
+      <div
+        ref={sectionRef}
+        className=" rounded-lg relative flex flex-col items-center h-screen w-screen bg-no-repeat bg-center font-semibold font-Montserrat bg-[url('./assets/background6.jpg')] z-0 "
+      >
+        {/* About */}
 
-                    <div className=" flex items-center gap-x-2 text-xl justify-center  xl:justify-start py-2 my-2 w-full font-semibold text-white">
-                      <p className="font-bold">Athens, Greece</p>
-                      <MdLocationSearching />
-                    </div>
-                    <div className="mt-4 text-white flex-col xl:flex-row flex items-center xl:justify-between">
-                      <div>
-                        <div className=" flex  gap-x-10 ">
-                          <a href="https://linkedin.com/in/michalis-bafalukos-468338176">
-                            <TfiLinkedin
-                              color="#fef08a"
-                              className="w-10 h-10 lg:w-16 lg:h-16 my-4 hover:scale-105 transition-all text-yellow-200 drop-shadow-[0_0_6px_rgba(255,0,150,0.8)]"
-                            />
-                          </a>
-                          <a href="https://github.com/MBafalukos">
-                            <FaGithub
-                              color="#fef08a"
-                              className="w-10 h-10 lg:w-16 lg:h-16 my-4 hover:scale-105 transition-all text-yellow-200 drop-shadow-[0_0_6px_rgba(255,0,150,0.8)]"
-                            />
-                          </a>
-                          <a href="https://github.com/MBafalukos">
-                            <FiDownload
-                              color="#fef08a"
-                              className="w-10 h-10 lg:w-16 lg:h-16 my-4 hover:scale-105 transition-all text-yellow-200 drop-shadow-[0_0_6px_rgba(255,0,150,0.8)]"
-                            />
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* What I do */}
-            <div className="">
-              <div className=" xl:mb-40 md:mx-28 text-4xl ">
-                <div className="border-b w-full justify-center flex border-zinc-700">
-                  <p className=" text-yellow-200 drop-shadow-[0_0_6px_rgba(255,0,150,0.8)] font-bold md:text-3xl text-4xl lg:text-6xl xl:text-7xl">
-                    What I do
-                  </p>
-                </div>
-              </div>
-              <div className="">
-                <div className="flex mx-10 py-10 max-w-screen">
-                  <motion.div
-                    initial={{ x: 0 }}
-                    animate={{ x: "-100%" }}
-                    transition={{
-                      duration: 15,
-                      repeat: Infinity,
-                      ease: "linear",
-                    }}
-                    className="flex  justify-evenly items-center   flex-shrink-0 container marquee-mask"
-                  >
-                    <div className="font-medium ">
-                      <div className="flex gap-x-2 items-center justify-center">
-                        <FaHtml5
-                          style={{ color: "orange" }}
-                          className="w-10 h-10 lg:w-16 lg:h-16"
-                        />
-                        <div className=" text-center text-white ">HTML</div>
-                      </div>
-                    </div>
-                    <div className="font-medium ">
-                      <div className="flex gap-x-2 items-center justify-center">
-                        <FaDatabase
-                          style={{ color: "orange" }}
-                          className="w-10 h-10 lg:w-16 lg:h-16"
-                        />
-                        <div className=" text-center text-white ">SQL</div>
-                      </div>
-                    </div>
-                    <div className="font-medium ">
-                      <div className="flex gap-x-2 items-center justify-center">
-                        <div className="  transition-all duration-300  ">
-                          <FaWordpress
-                            style={{ color: "orange" }}
-                            className="w-10 h-10 lg:w-16 lg:h-16 "
-                          />
-                        </div>
-                        <div className=" text-center text-white ">
-                          Wordpress
-                        </div>
-                      </div>
-                    </div>
-                    <div className="font-medium">
-                      <div className="flex  gap-x-2 items-center justify-center">
-                        <FaAws
-                          style={{ color: "orange" }}
-                          className="w-10 h-10 lg:w-16 lg:h-16"
-                        />
-                        <div className=" text-center text-white ">Cloud</div>
-                      </div>
-                    </div>
-                    <div className="font-medium">
-                      <div className="flex  gap-x-2 items-center justify-center">
-                        <FaPython
-                          style={{ color: "orange" }}
-                          className="w-10 h-10 lg:w-16 lg:h-16"
-                        />
-                        <div className=" text-center text-white ">Python</div>
-                      </div>
-                    </div>
-                  </motion.div>
-                  <motion.div
-                    initial={{ x: 0 }}
-                    animate={{ x: "-100%" }}
-                    transition={{
-                      duration: 15,
-                      repeat: Infinity,
-                      ease: "linear",
-                    }}
-                    className="flex  justify-evenly items-center   flex-shrink-0 container "
-                  >
-                    <div className="font-medium ">
-                      <div className="flex gap-x-2 items-center justify-center">
-                        <FaHtml5
-                          style={{ color: "orange" }}
-                          className="w-10 h-10 lg:w-16 lg:h-16"
-                        />
-                        <div className=" text-center text-white ">HTML</div>
-                      </div>
-                    </div>
-                    <div className="font-medium ">
-                      <div className="flex gap-x-2 items-center justify-center">
-                        <FaDatabase
-                          style={{ color: "orange" }}
-                          className="w-10 h-10 lg:w-16 lg:h-16"
-                        />
-                        <div className=" text-center text-white ">SQL</div>
-                      </div>
-                    </div>
-                    <div className="font-medium ">
-                      <div className="flex gap-x-2 items-center justify-center">
-                        <div className="  transition-all duration-300  ">
-                          <FaWordpress
-                            style={{ color: "orange" }}
-                            className="w-10 h-10 lg:w-16 lg:h-16 "
-                          />
-                        </div>
-                        <div className=" text-center text-white ">
-                          Wordpress
-                        </div>
-                      </div>
-                    </div>
-                    <div className="font-medium">
-                      <div className="flex  gap-x-2 items-center justify-center">
-                        <FaAws
-                          style={{ color: "orange" }}
-                          className="w-10 h-10 lg:w-16 lg:h-16"
-                        />
-                        <div className=" text-center text-white ">Cloud</div>
-                      </div>
-                    </div>
-                    <div className="font-medium">
-                      <div className="flex  gap-x-2 items-center justify-center">
-                        <FaPython
-                          style={{ color: "orange" }}
-                          className="w-10 h-10 lg:w-16 lg:h-16"
-                        />
-                        <div className=" text-center text-white ">Python</div>
-                      </div>
-                    </div>
-                  </motion.div>
-                </div>
-              </div>
-
-              {/* Info Grid */}
-              {/* <div className="grid xl:grid-cols-3 grid-cols-1 xl:gap-y-10 xl:pb-40 xl:px-10 xl:gap-x-5 py-5  ">
-                <div>
-                  <div className="font-medium ">
-                    <div className="flex flex-col flex-wrap p-2 lg:px-10 md:mx-5  xl:rounded-md rounded-t-md hover:shadow-md transition-all duration-300 ">
-                      <div className=" text-center py-1 ">
-                        <div className=" justify-center text-center gap-x-2 flex flex-row xl:flex-col  py-1 ">
-                          <h3 className="text-xl xl:text-3xl text-white ">
-                            Frontend
-                          </h3>
-                          <h3 className="text-xl xl:text-3xl text-white ">
-                            Development
-                          </h3>
-                        </div>
-                        <div className="flex xl:hidden transition-all duration-300 font-medium">
-                          <div className="flex w-full  ">
-                            <p className="text-base mx-auto text-white ">
-                              <span className="bg-gradient-to-r from-amber-100 to-amber-200 bg-clip-text text-transparent">
-                                Responsive
-                              </span>{" "}
-                              <span className="bg-gradient-to-r from-amber-100 to-amber-200 bg-clip-text text-transparent">
-                                ,fast
-                              </span>{" "}
-                              interfaces with a focus on clean, scalable code.
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div>
-                  <div className="font-medium">
-                    <div className=" flex flex-col flex-wrap p-2 lg:px-10 md:mx-5    xl:rounded-md hover:shadow-md transition-all duration-300  ">
-                      <div className=" justify-center text-center gap-x-2 flex flex-row xl:flex-col  py-1 ">
-                        <h3 className="text-xl xl:text-3xl text-white ">
-                          UI/UX
-                        </h3>
-                        <h3 className="text-xl xl:text-3xl text-white ">
-                          Design
-                        </h3>
-                      </div>
-                      <div className="flex xl:hidden  place-items-end  transition-all duration-300 font-medium">
-                        <div className="flex rounded-md w-full backdrop-blur-xl">
-                          <p className="text-base  text-center mx-auto text-white ">
-                            <span className="bg-gradient-to-r from-amber-100 to-amber-200 bg-clip-text text-transparent">
-                              Clean , Minimalistic
-                            </span>{" "}
-                            Layouts{" "}
-                            <span className="text-white">
-                              personalized for maximum user engagement
-                            </span>{" "}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div>
-                  <div className="font-medium">
-                    <div className=" flex flex-col flex-wrap p-2 md:mx-5 lg:px-10 sm:rounded-b-md rounded-b-lg xl:rounded-md hover:shadow-md transition-all duration-300  ">
-                      <div className=" text-center py-1 ">
-                        <div className=" justify-center text-center gap-x-2 flex flex-row xl:flex-col  py-1 ">
-                          <h3 className="text-xl xl:text-3xl text-white ">
-                            Interaction
-                          </h3>
-                          <h3 className="text-xl xl:text-3xl text-white ">
-                            Animation
-                          </h3>
-                        </div>
-                        <div className="flex xl:hidden  transition-all duration-300 font-medium">
-                          <div className="flex w-full  ">
-                            <p className="text-base mx-auto text-white  backdrop-blur-xl ">
-                              <span className="bg-gradient-to-r from-amber-100 to-amber-200 bg-clip-text text-transparent">
-                                Engaging
-                              </span>{" "}
-                              <span className="bg-gradient-to-r from-amber-100 to-amber-200 bg-clip-text text-transparent">
-                                , interactive
-                              </span>{" "}
-                              animations that enhance the user experience and
-                              guide user flow.{" "}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div>
-                  <div className="relative hidden xl:flex mx-auto transition-all duration-300 font-medium ">
-                    <p className="text-base text-zinc-200 w-full  text-center ">
-                      Responsive, fast interfaces with a focus on clean,
-                      scalable code
-                    </p>
-                  </div>
-                </div>
-                <div>
-                  <div className="hidden xl:flex mx-auto transition-all duration-300 font-medium ">
-                    <p className="text-base text-center text-white w-full   ">
-                      Clean , Minimalistic Layouts personalized for maximum user
-                      engagement
-                    </p>
-                  </div>
-                </div>
-                <div>
-                  <div className="hidden xl:flex transition-all duration-300 font-medium ">
-                    <p className="text-base w-full  text-white text-center ">
-                      Engaging, interactive animations that enhance the user
-                      experience{" "}
-                    </p>
-                  </div>
-                </div>
-              </div> */}
-            </div>
-            {/* Latest Projects */}
-            <div className="">
-              <p className="text-yellow-200 drop-shadow-[0_0_6px_rgba(255,0,150,0.8)] font-bold md:text-3xl text-4xl lg:text-6xl xl:text-7xl text-center">
-                Projects
-              </p>
-            </div>
-            {/* Projects Mobile*/}
-            <div className="flex lg:hidden items-center justify-center ">
-              <Carousel className="w-full  max-w-xs py-10">
-                <CarouselContent>
-                  <CarouselItem>
-                    <div className="p-1 text-center ">
-                      <Card className="bg-[url('./assets/Nasia1.jpeg')] bg-top bg-cover  ">
-                        <CardContent className=" flex aspect-square text-white  flex-col items-center justify-center p-10"></CardContent>
-                      </Card>
-                      <div className="flex flex-col items-center">
-                        <span className="text-4xl text-white  font-semibold">
-                          01.Digital Bio
-                        </span>
-                        <div className="flex gap-x-3 mt-2">
-                          <Badge
-                            variant="outline"
-                            className=" text-white top-0 right-0"
-                          >
-                            nasia-adam.com
-                          </Badge>
-                        </div>
-                      </div>
-                    </div>
-                  </CarouselItem>
-                  <CarouselItem>
-                    <div className="p-1 text-center ">
-                      <Card className="bg-[url('./assets/Nasia2.JPG')] bg-top bg-cover  ">
-                        <CardContent className=" flex aspect-square text-white  flex-col items-center justify-center p-10"></CardContent>
-                      </Card>
-                      <div className="flex flex-col items-center">
-                        <span className="text-4xl text-white  font-semibold">
-                          02.Branding
-                        </span>
-                        <div className="flex gap-x-3 mt-2">
-                          <Badge
-                            variant="outline"
-                            className=" text-white top-0 right-0"
-                          >
-                            dotheworkintensive.com
-                          </Badge>
-                        </div>
-                      </div>
-                    </div>
-                  </CarouselItem>
-                  <CarouselItem>
-                    <div className="p-1 text-center ">
-                      <Card className="bg-[url('./assets/kifisia_3-1.jpg')] bg-top bg-cover  ">
-                        <CardContent className=" flex aspect-square text-white  flex-col items-center justify-center p-10"></CardContent>
-                      </Card>
-                      <div className="flex flex-col items-center">
-                        <span className="text-4xl text-white  font-semibold">
-                          03.Branding
-                        </span>
-                        <div className="flex gap-x-3 mt-2">
-                          <Badge
-                            variant="outline"
-                            className=" text-white top-0 right-0"
-                          >
-                            inter-tech.gr
-                          </Badge>
-                        </div>
-                      </div>
-                    </div>
-                  </CarouselItem>
-                </CarouselContent>
-              </Carousel>
-            </div>
-            {/* Projects Large Viewport*/}
-            <div id="Projects" className=" h-fit hidden lg:block ">
-              <div className="  w-full pt-10 lg:pt-46">
-                <div className="flex lg:flex-row flex-col w-full  justify-between px-2 lg:pl-10 ">
-                  <div className="w-full justify-center items-start gap-x-10  flex flex-col   border-b-white border-b-2 h-fit py-5 lg:py-16">
-                    <div className="flex lg:flex-row flex-col gap-x-3">
-                      <div className="flex items-center text-left text-2xl lg:text-3xl  text-white">
-                        <BsDot />
-                        <a href="https://nasia-adam.com/">Nasia-adam.com</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex lg:flex-row flex-col w-full  justify-between px-2 lg:pl-10 ">
-                  <div className="w-full justify-center items-start gap-x-10  flex flex-col   border-b-white border-b-2 h-fit py-5 lg:py-16">
-                    <div className="flex lg:flex-row flex-col gap-x-3">
-                      <div className="flex text-left text-2xl lg:text-3xl  text-white">
-                        <BsDot />
-                        <a href="https://dotheworkintensive.com/">
-                          Dotheworkintensive.com
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex lg:flex-row flex-col w-full  justify-between px-2 lg:pl-10 ">
-                  <div className="w-full justify-center items-start gap-x-10  flex flex-col   h-fit py-5 lg:py-16">
-                    <div className="flex lg:flex-row flex-col gap-x-3">
-                      <div className="flex items-center  text-2xl lg:text-3xl  text-white">
-                        <BsDot />
-                        <a href="https://inter-tech.gr/">Inter-tech</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            {/* Contact*/}
-            <div
-              id="Contact"
-              className="flex flex-col xl:flex-row items-center justify-center border-b   "
-            >
-              <div className="lg:text-start text-center  lg:px-28 pb-10  ">
-                <p className="text-yellow-200 drop-shadow-[0_0_6px_rgba(255,0,150,0.8)] font-bold md:text-3xl text-4xl lg:text-6xl xl:text-7xl">
-                  Let's Talk
+        <div className=" lg:mx-28 text-4xl absolute mt-32 flex flex-col xl:flex-row ">
+          <div className="flex flex-col xl:flex-row  w-full items-center xl:items-baseline justify-center">
+            {/* <Avatar className="w-40 h-40   ">
+              <AvatarImage src={mike} />
+              <AvatarFallback>CN</AvatarFallback>
+            </Avatar> */}
+            <div className="flex flex-col w-full lg:p-10 pt-10 ">
+              <div className=" text-center xl:text-start  ">
+                <p className="md:text-7xl text-5xl lg:text-8xl xl:text-9xl font-bold font-Notable w-full text-[#EE7319]    ">
+                  Hi.I'm Mike
+                </p>
+                <p className=" md:text-7xl text-5xl lg:text-8xl font-Notable xl:text-9xl font-bold w-full text-white drop-shadow-[0_0_6px_rgba(255,0,150,0.8)] ">
+                  A Designer
                 </p>
               </div>
-              <div className="flex ">
-                <span className="flex items-center justify-center w-10  h-16 lg:w-16 lg:h-16 bg-amber-400 rounded-lg me-4 shrink-0">
-                  <svg
-                    className="w-10 lg:w-16 h-16 text-primary"
-                    viewBox="0 0 24 24"
-                    version="1.1"
-                    xmlns="http://www.w3.org/2000/svg"
-                    xmlnsXlink="http://www.w3.org/1999/xlink"
-                  >
-                    {" "}
-                    <g
-                      stroke="none"
-                      strokeWidth={1}
-                      fill="none"
-                      fillRule="evenodd"
-                    >
-                      {" "}
-                      <rect
-                        id="bound"
-                        x={0}
-                        y={0}
-                        width={24}
-                        height={24}
-                      />{" "}
-                      <path
-                        d="M12.7037037,14 L15.6666667,10 L13.4444444,10 L13.4444444,6 L9,12 L11.2222222,12 L11.2222222,14 L6,14 C5.44771525,14 5,13.5522847 5,13 L5,3 C5,2.44771525 5.44771525,2 6,2 L18,2 C18.5522847,2 19,2.44771525 19,3 L19,13 C19,13.5522847 18.5522847,14 18,14 L12.7037037,14 Z"
-                        id="Combined-Shape"
-                        fill="currentcolor"
-                        opacity="0.3"
-                      />{" "}
-                      <path
-                        d="M9.80428954,10.9142091 L9,12 L11.2222222,12 L11.2222222,16 L15.6666667,10 L15.4615385,10 L20.2072547,6.57253826 C20.4311176,6.4108595 20.7436609,6.46126971 20.9053396,6.68513259 C20.9668779,6.77033951 21,6.87277228 21,6.97787787 L21,17 C21,18.1045695 20.1045695,19 19,19 L5,19 C3.8954305,19 3,18.1045695 3,17 L3,6.97787787 C3,6.70173549 3.22385763,6.47787787 3.5,6.47787787 C3.60510559,6.47787787 3.70753836,6.51099993 3.79274528,6.57253826 L9.80428954,10.9142091 Z"
-                        id="Combined-Shape"
-                        fill="currentcolor"
-                      />{" "}
-                    </g>{" "}
-                  </svg>
-                </span>
-                <div className="grow pb-10">
-                  <h5 className="text-lg lg:text-3xl text-amber-400">Email</h5>
-                  <a
-                    href="mailto:m.bafalukos@gmail.com"
-                    className="text-white text-base lg:text-2xl"
-                  >
-                    m.bafalukos@gmail.com
-                  </a>
-                </div>
+            </div>
+          </div>
+        </div>
+
+        {/*Marquee*/}
+        <div className="flex absolute bottom-5 mx-10 py-10 max-w-screen">
+          <motion.div
+            initial={{ x: 0 }}
+            animate={{ x: "-100%" }}
+            transition={{
+              duration: 15,
+              repeat: Infinity,
+              ease: "linear",
+            }}
+            className="flex  justify-evenly items-center   flex-shrink-0 container marquee-mask"
+          >
+            <div className="font-medium ">
+              <div className="flex gap-x-2 items-center justify-center">
+                <FaHtml5
+                  style={{ color: "orange" }}
+                  className="w-10 h-10 lg:w-16 lg:h-16"
+                />
+                <div className=" text-center text-white ">HTML</div>
               </div>
             </div>
-            {/* Footer*/}
-            <div className="text-center pb-10 ">
-              <p className="text-gray-500/80 text-base">
-                {new Date().getFullYear()}© All rights reserved.
-              </p>
+            <div className="font-medium ">
+              <div className="flex gap-x-2 items-center justify-center">
+                <FaDatabase
+                  style={{ color: "orange" }}
+                  className="w-10 h-10 lg:w-16 lg:h-16"
+                />
+                <div className=" text-center text-white ">SQL</div>
+              </div>
             </div>
+            <div className="font-medium ">
+              <div className="flex gap-x-2 items-center justify-center">
+                <div className="  transition-all duration-300  ">
+                  <FaWordpress
+                    style={{ color: "orange" }}
+                    className="w-10 h-10 lg:w-16 lg:h-16 "
+                  />
+                </div>
+                <div className=" text-center text-white ">Wordpress</div>
+              </div>
+            </div>
+            <div className="font-medium">
+              <div className="flex  gap-x-2 items-center justify-center">
+                <FaAws
+                  style={{ color: "orange" }}
+                  className="w-10 h-10 lg:w-16 lg:h-16"
+                />
+                <div className=" text-center text-white ">Cloud</div>
+              </div>
+            </div>
+            <div className="font-medium">
+              <div className="flex  gap-x-2 items-center justify-center">
+                <FaPython
+                  style={{ color: "orange" }}
+                  className="w-10 h-10 lg:w-16 lg:h-16"
+                />
+                <div className=" text-center text-white ">Python</div>
+              </div>
+            </div>
+          </motion.div>
+          <motion.div
+            initial={{ x: 0 }}
+            animate={{ x: "-100%" }}
+            transition={{
+              duration: 15,
+              repeat: Infinity,
+              ease: "linear",
+            }}
+            className="flex  justify-evenly items-center   flex-shrink-0 container "
+          >
+            <div className="font-medium ">
+              <div className="flex gap-x-2 items-center justify-center">
+                <FaHtml5
+                  style={{ color: "orange" }}
+                  className="w-10 h-10 lg:w-16 lg:h-16"
+                />
+                <div className=" text-center text-white ">HTML</div>
+              </div>
+            </div>
+            <div className="font-medium ">
+              <div className="flex gap-x-2 items-center justify-center">
+                <FaDatabase
+                  style={{ color: "orange" }}
+                  className="w-10 h-10 lg:w-16 lg:h-16"
+                />
+                <div className=" text-center text-white ">SQL</div>
+              </div>
+            </div>
+            <div className="font-medium ">
+              <div className="flex gap-x-2 items-center justify-center">
+                <div className="  transition-all duration-300  ">
+                  <FaWordpress
+                    style={{ color: "orange" }}
+                    className="w-10 h-10 lg:w-16 lg:h-16 "
+                  />
+                </div>
+                <div className=" text-center text-white ">Wordpress</div>
+              </div>
+            </div>
+            <div className="font-medium">
+              <div className="flex  gap-x-2 items-center justify-center">
+                <FaAws
+                  style={{ color: "orange" }}
+                  className="w-10 h-10 lg:w-16 lg:h-16"
+                />
+                <div className=" text-center text-white ">Cloud</div>
+              </div>
+            </div>
+            <div className="font-medium">
+              <div className="flex  gap-x-2 items-center justify-center">
+                <FaPython
+                  style={{ color: "orange" }}
+                  className="w-10 h-10 lg:w-16 lg:h-16"
+                />
+                <div className=" text-center text-white ">Python</div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+      {/* Projects */}
+      <div className="flex bg-black relative flex-col items-center  w-screen h-full font-semibold font-Montserrat ">
+        <p className="flex font-Notable text-5xl text-white my-5 ">Projects</p>
+        <div className="grid grid-cols-1  w-full place-items-center   gap-6 items-center justify-center">
+          <Card
+            data-aos="fade-right"
+            data-aos-delay="100"
+            data-aos-offset="0"
+            data-aos-once="true"
+            className="w-full overflow-hidden h-[230px] md:h-[520px] md:max-w-md relative max-w-sm bg-[url('./assets/Nasia1.jpg')] bg-cover  bg-center"
+          >
+            <div>
+              {isDesktop ? (
+                <Dialog open={open2} onOpenChange={setOpen2}>
+                  <DialogTrigger>
+                    <div className="text-white text-xl  absolute top-0 right-0 font-Montserrat  p-1">
+                      <SlOptions />
+                    </div>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[525px] text-red-400 bg-black">
+                    <DialogHeader className="text-white">
+                      <DialogTitle className="text-2xl">
+                        Digital Biography{" "}
+                      </DialogTitle>
+                      <DialogDescription>
+                        Nasia Adam is a graduate of higher professional dance
+                        school as a ballet & contemporary dance teacher. In her
+                        professional career she has performed alongside renowned
+                        Greek artist such as Elena Paparizou, Anna Vissi, Eleni
+                        Foureira, Nikos Oikonomopoulos, Josephine and many
+                        others. In addition to her performance career she is
+                        also a choreographer and has assisted several respected
+                        choreographers .
+                      </DialogDescription>
+                      <DialogTitle>Features</DialogTitle>
+                      <DialogDescription>
+                        Responsive , Smooth Scroll , SEO Optimized{" "}
+                      </DialogDescription>
+                      <DialogTitle>Technologies</DialogTitle>
+                      <DialogDescription>Wordpress</DialogDescription>
+                    </DialogHeader>
+                  </DialogContent>
+                </Dialog>
+              ) : (
+                <Drawer open={open2} onOpenChange={setOpen2}>
+                  <DrawerTrigger>
+                    <div className="text-white text-xl  absolute top-0 right-0 font-Montserrat  p-1">
+                      <SlOptions />
+                    </div>
+                  </DrawerTrigger>
+                  <DrawerContent className="bg-black border-none">
+                    <DrawerHeader className="text-left text-white ">
+                      <DrawerTitle className="text-2xl">
+                        Digital Biography{" "}
+                      </DrawerTitle>
+                      <DrawerDescription>
+                        Nasia Adam is a graduate of higher professional dance
+                        school as a ballet & contemporary dance teacher. In her
+                        professional career she has performed alongside renowned
+                        Greek artist such as Elena Paparizou, Anna Vissi, Eleni
+                        Foureira, Nikos Oikonomopoulos, Josephine and many
+                        others. In addition to her performance career she is
+                        also a choreographer and has assisted several respected
+                        choreographers .
+                      </DrawerDescription>
+                      <DrawerTitle className=" text-white text-2xl">
+                        Features{" "}
+                      </DrawerTitle>
+                      <DrawerDescription>
+                        Responsive , Smooth Scroll , SEO Optimized{" "}
+                      </DrawerDescription>
+                      <DrawerTitle className=" text-white text-2xl">
+                        Technologies{" "}
+                      </DrawerTitle>
+                      <DrawerDescription>Wordpress</DrawerDescription>
+                    </DrawerHeader>
+
+                    <DrawerFooter className="pt-2">
+                      <DrawerClose asChild>
+                        <Button
+                          variant="destructive"
+                          className="text-white bg-red-600"
+                        >
+                          Close
+                        </Button>
+                      </DrawerClose>
+                    </DrawerFooter>
+                  </DrawerContent>
+                </Drawer>
+              )}
+            </div>
+            <CardHeader className="text-gray-900">
+              <CardFooter className="absolute bottom-0 left-0 flex flex-col items-start ">
+                <div
+                  data-aos="zoom-out-up"
+                  data-aos-duration="400"
+                  data-aos-once="true"
+                  className="text-white flex items-center text-2xl"
+                >
+                  <CiGlobe />
+                  <a href="https://nasia-adam.com">
+                    <p className="font-light text-3xl">Nasia-adam.com</p>
+                  </a>
+                </div>
+              </CardFooter>
+            </CardHeader>
+          </Card>
+
+          <Card
+            data-aos="fade-right"
+            data-aos-delay="100"
+            data-aos-offset="0"
+            data-aos-once="true"
+            className="w-full md:h-[520px] h-[230px] md:max-w-md  overflow-hidden max-w-sm bg-[url('./assets/image00001.png')]  bg-contain  bg-center bg-no-repeat"
+          >
+            <div>
+              {isDesktop ? (
+                <Dialog open={open3} onOpenChange={setOpen3}>
+                  <DialogTrigger>
+                    <div className="text-white text-xl  absolute top-0 right-0 font-Montserrat  p-1">
+                      <SlOptions />
+                    </div>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[525px] text-red-400 bg-black">
+                    <DialogHeader className="text-white">
+                      <DialogTitle className="text-2xl">
+                        Event Website{" "}
+                      </DialogTitle>
+                      <DialogDescription>
+                        Do The Work Heels Intensive is designed for dancers
+                        ready to push their limits, refine their technique, and
+                        elevate their artistry.
+                      </DialogDescription>
+                      <DialogTitle>Features</DialogTitle>
+                      <DialogDescription>
+                        Responsive , Contact Form , SEO Optimized{" "}
+                      </DialogDescription>
+                      <DialogTitle>Technologies</DialogTitle>
+                      <DialogDescription>Wordpress</DialogDescription>
+                    </DialogHeader>
+                  </DialogContent>
+                </Dialog>
+              ) : (
+                <Drawer open={open3} onOpenChange={setOpen3}>
+                  <DrawerTrigger>
+                    <div className="text-white text-xl  absolute top-0 right-0 font-Montserrat  p-1">
+                      <SlOptions />
+                    </div>
+                  </DrawerTrigger>
+                  <DrawerContent className="bg-black border-none">
+                    <DrawerHeader className="text-left text-white ">
+                      <DrawerTitle className="text-2xl">
+                        Event Website{" "}
+                      </DrawerTitle>
+                      <DrawerDescription>
+                        Do The Work Heels Intensive is designed for dancers
+                        ready to push their limits, refine their technique, and
+                        elevate their artistry.
+                      </DrawerDescription>
+                      <DrawerTitle className=" text-white text-2xl">
+                        Features{" "}
+                      </DrawerTitle>
+                      <DrawerDescription>
+                        Responsive , Contact Form , SEO Optimized{" "}
+                      </DrawerDescription>
+                      <DrawerTitle className=" text-white text-2xl">
+                        Technologies{" "}
+                      </DrawerTitle>
+                      <DrawerDescription>Wordpress</DrawerDescription>
+                    </DrawerHeader>
+
+                    <DrawerFooter className="pt-2">
+                      <DrawerClose asChild>
+                        <Button
+                          variant="destructive"
+                          className="text-white bg-red-600"
+                        >
+                          Close
+                        </Button>
+                      </DrawerClose>
+                    </DrawerFooter>
+                  </DrawerContent>
+                </Drawer>
+              )}
+            </div>
+            <CardHeader className="text-gray-900"></CardHeader>
+            <CardFooter className="absolute bottom-0 left-0 flex flex-col items-start ">
+              <div
+                data-aos="zoom-out-up"
+                data-aos-duration="400"
+                data-aos-once="true"
+                className="text-white flex items-center text-2xl"
+              >
+                <CiGlobe />
+                <a href="https://dotheworkintensive.com">
+                  <p className="font-light text-2xl">dotheworkintensive.com</p>
+                </a>
+              </div>
+            </CardFooter>
+          </Card>
+
+          <Card
+            data-aos="fade-right"
+            data-aos-delay="100"
+            data-aos-offset="0"
+            data-aos-once="true"
+            className="w-full overflow-hidden h-[230px] md:h-[520px]  relative max-w-sm md:max-w-md bg-[url('./assets/building3.jpg')] bg-cover  bg-center"
+          >
+            <div>
+              {isDesktop ? (
+                <Dialog open={open1} onOpenChange={setOpen1}>
+                  <DialogTrigger>
+                    <div className="text-white text-xl  absolute top-0 right-0 font-Montserrat  p-1">
+                      <SlOptions />
+                    </div>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[525px] text-red-400 bg-black">
+                    <DialogHeader className="text-white">
+                      <DialogTitle className="text-2xl">Website </DialogTitle>
+                      <DialogDescription>
+                        The company STRATA A.T.E. is part of the group of
+                        companies and operates in the field of real estate
+                        development and management.
+                      </DialogDescription>
+                      <DialogTitle>Features</DialogTitle>
+                      <DialogDescription>
+                        Responsive , SEO Optimized{" "}
+                      </DialogDescription>
+                      <DialogTitle>Technologies</DialogTitle>
+                      <DialogDescription>Wordpress</DialogDescription>
+                    </DialogHeader>
+                  </DialogContent>
+                </Dialog>
+              ) : (
+                <Drawer open={open1} onOpenChange={setOpen1}>
+                  <DrawerTrigger>
+                    <div className="text-white text-xl  absolute top-0 right-0 font-Montserrat  p-1">
+                      <SlOptions />
+                    </div>
+                  </DrawerTrigger>
+                  <DrawerContent className="bg-black border-none">
+                    <DrawerHeader className="text-left text-white ">
+                      <DrawerTitle className="text-2xl">Website </DrawerTitle>
+                      <DrawerDescription>
+                        The company STRATA A.T.E. is part of the group of
+                        companies and operates in the field of real estate
+                        development and management.
+                      </DrawerDescription>
+                      <DrawerTitle className=" text-white text-2xl">
+                        Features{" "}
+                      </DrawerTitle>
+                      <DrawerDescription>
+                        Responsive , SEO Optimized{" "}
+                      </DrawerDescription>
+                      <DrawerTitle className=" text-white text-2xl">
+                        Technologies{" "}
+                      </DrawerTitle>
+                      <DrawerDescription>Wordpress</DrawerDescription>
+                    </DrawerHeader>
+
+                    <DrawerFooter className="pt-2">
+                      <DrawerClose asChild>
+                        <Button
+                          variant="destructive"
+                          className="text-white bg-red-600"
+                        >
+                          Close
+                        </Button>
+                      </DrawerClose>
+                    </DrawerFooter>
+                  </DrawerContent>
+                </Drawer>
+              )}
+            </div>
+
+            <CardHeader className="text-gray-900">
+              <CardFooter className="absolute bottom-0 left-0 flex flex-col items-start ">
+                <div
+                  data-aos="zoom-out-up"
+                  data-aos-duration="400"
+                  data-aos-once="true"
+                  className="text-white flex items-center text-2xl"
+                >
+                  <CiGlobe />
+                  <a href="https://inter-tech.gr">
+                    <p className="font-light text-3xl">Inter-tech.gr</p>
+                  </a>
+                </div>
+              </CardFooter>
+            </CardHeader>
+          </Card>
+
+          <Card
+            data-aos="fade-right"
+            data-aos-delay="100"
+            data-aos-offset="0"
+            data-aos-once="true"
+            className="w-full overflow-hidden h-[230px] md:h-[520px]  md:max-w-md relative max-w-sm bg-[url('./assets/ongoing.jpg')] bg-cover  bg-center"
+          >
+            <div>
+              {isDesktop ? (
+                <Dialog open={open4} onOpenChange={setOpen4}>
+                  <DialogTrigger>
+                    <div className="text-white text-xl  absolute top-0 right-0 font-Montserrat  p-1">
+                      <SlOptions />
+                    </div>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[525px] text-red-400 bg-black">
+                    <DialogHeader className="text-white">
+                      <DialogTitle className="text-2xl">Website</DialogTitle>
+                      <DialogDescription>Demo Project</DialogDescription>
+                      <DialogTitle>Features</DialogTitle>
+                      <DialogDescription>
+                        Responsive , Pixel Perfect , Contact Form , Animated{" "}
+                      </DialogDescription>
+                      <DialogTitle>Technologies</DialogTitle>
+                      <DialogDescription>
+                        React , Vite , Tailwind CSS , AOS
+                      </DialogDescription>
+                    </DialogHeader>
+                  </DialogContent>
+                </Dialog>
+              ) : (
+                <Drawer open={open4} onOpenChange={setOpen4}>
+                  <DrawerTrigger>
+                    <div className="text-white text-xl  absolute top-0 right-0 font-Montserrat  p-1">
+                      <SlOptions />
+                    </div>
+                  </DrawerTrigger>
+                  <DrawerContent className="bg-black border-none">
+                    <DrawerHeader className="text-left text-white ">
+                      <DrawerTitle className="text-2xl">Website </DrawerTitle>
+                      <DrawerDescription>Demo Project</DrawerDescription>
+                      <DrawerTitle className=" text-white text-2xl">
+                        Features{" "}
+                      </DrawerTitle>
+                      <DrawerDescription>
+                        Responsive , Pixel Perfect , Contact Form , Animated{" "}
+                      </DrawerDescription>
+                      <DrawerTitle className=" text-white text-2xl">
+                        Technologies{" "}
+                      </DrawerTitle>
+                      <DrawerDescription>
+                        React , Vite , Tailwind CSS , AOS
+                      </DrawerDescription>
+                    </DrawerHeader>
+
+                    <DrawerFooter className="pt-2">
+                      <DrawerClose asChild>
+                        <Button
+                          variant="destructive"
+                          className="text-white bg-red-600"
+                        >
+                          Close
+                        </Button>
+                      </DrawerClose>
+                    </DrawerFooter>
+                  </DrawerContent>
+                </Drawer>
+              )}
+            </div>
+            <div className="text-white flex items-center text-md absolute top-0 left-0 font-Montserrat font-light p-1 ">
+              <Spinner className="size-5 text-white  " />
+              Upcoming
+            </div>
+
+            <CardFooter className="absolute bottom-0 left-0 flex flex-col items-start ">
+              <div
+                data-aos="zoom-out-up"
+                data-aos-duration="400"
+                data-aos-once="true"
+                className="text-white flex items-center text-2xl"
+              >
+                <CiGlobe />
+                <a href="https://mbafalukos.github.io/RetailVivo/">
+                  <p className="font-light text-3xl">Live Preview</p>
+                </a>
+              </div>
+            </CardFooter>
+          </Card>
+        </div>
+
+        <div className="flex items-center flex-col mt-16 lg:mt-28">
+          {/* Contact */}
+
+          <div className=" text-white flex-col xl:flex-row flex items-center xl:justify-between  ">
+            <div>
+              <div className=" flex  gap-x-10 ">
+                <a href="https://linkedin.com/in/michalis-bafalukos-468338176">
+                  <TfiLinkedin
+                    color="#EE7319"
+                    className="w-10 h-10 lg:w-16 lg:h-16 my-4 hover:scale-105 transition-all text-yellow-200 drop-shadow-[0_0_2px_rgba(255,0,150,0.8)]"
+                  />
+                </a>
+                <a href="https://github.com/MBafalukos">
+                  <FaGithub
+                    color="#EE7319"
+                    className="w-10 h-10 lg:w-16 lg:h-16 my-4 hover:scale-105 transition-all text-yellow-200 drop-shadow-[0_0_2px_rgba(255,0,150,0.8)]"
+                  />
+                </a>
+                <a href={CV}>
+                  <FiDownload
+                    color="#EE7319"
+                    className="w-10 h-10 lg:w-16 lg:h-16 my-4 hover:scale-105 transition-all text-yellow-200 drop-shadow-[0_0_1px_rgba(255,0,150,0.8)]"
+                  />
+                </a>
+                <a href="mailto:m.bafalukos@gmail.com">
+                  <FiMail
+                    color="#EE7319"
+                    className="w-10 h-10 lg:w-16 lg:h-16 my-4 hover:scale-105 transition-all text-yellow-200 drop-shadow-[0_0_2px_rgba(255,0,150,0.8)]"
+                  />
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {/* Footer*/}
+          <div className="text-center  py-5 ">
+            <p className="text-gray-500/80 text-base">
+              {new Date().getFullYear()}© All rights reserved.
+            </p>
           </div>
         </div>
       </div>

@@ -5,6 +5,16 @@
 *{
   scroll-behavior: smooth;
 }
+@keyframes gradient-slow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-gradient-slow {
+  background-size: 400% 400%;
+  animation: gradient-slow 10s ease infinite;
+}
 
 .marquee-mask {
   -webkit-mask-image: linear-gradient(
