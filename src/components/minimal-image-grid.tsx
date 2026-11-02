@@ -3,6 +3,10 @@ import { motion, useAnimationControls, useReducedMotion } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { PropsWithChildren } from "react";
+import nasiaShot from "../assets/NasiaScreenshot.webp";
+import dotheworkShot from "../assets/DotheworkScreenshot.webp";
+import stolesShot from "../assets/GeorgantonisScreenshot.webp";
+import brewcycleShot from "../assets/BrewcycleScreenshot.webp";
 import QuickLinks from "./QuickLinks";
 import SiteNav from "./SiteNav";
 import About from "./About";
@@ -20,7 +24,8 @@ type Service = {
   stack: string[];
   description: string;
   bullets: string[];
-  imageClass: string;
+  image: string;
+  imageAlt: string;
   link: string;
 };
 
@@ -39,7 +44,8 @@ const services: Service[] = [
       "Image-led hero kept light enough for mobile",
       "Single page on her own domain",
     ],
-    imageClass: "bg-[url('./assets/NasiaScreenshot.webp')]",
+    image: nasiaShot,
+    imageAlt: "The nasia-adam.com home page, scrolled from top to bottom",
     link: "https://nasia-adam.com",
   },
   {
@@ -56,7 +62,8 @@ const services: Service[] = [
       "Registration flow for a dated, limited-seat course",
       "Structured around one clear call to action",
     ],
-    imageClass: "bg-[url('./assets/DotheworkScreenshot.webp')]",
+    image: dotheworkShot,
+    imageAlt: "The dotheworkintensive.com landing page, top to bottom",
     link: "https://dotheworkintensive.com",
   },
   {
@@ -73,7 +80,8 @@ const services: Service[] = [
       "Card payments through Nexi, plus cash on delivery",
       "Mid-migration to ASP.NET Core and Angular SSR",
     ],
-    imageClass: "bg-[url('./assets/GeorgantonisScreenshot.webp')]",
+    image: stolesShot,
+    imageAlt: "The stolesergasias.gr storefront, top to bottom",
     link: "https://stolesergasias.gr",
   },
   {
@@ -90,7 +98,8 @@ const services: Service[] = [
       "Metrics pulled from the Google Analytics Data API",
       "Postgres through Supabase and Prisma, hosted on Vercel",
     ],
-    imageClass: "bg-[url('./assets/BrewcycleScreenshot.webp')] bg-cover",
+    image: brewcycleShot,
+    imageAlt: "The brewcycle.at landing page, top to bottom",
     link: "https://brewcycle.at/",
   },
 ];
@@ -257,19 +266,7 @@ export function GlitchText({
   }
 
   return (
-    <motion.span
-      className={`relative inline-block select-none ${className}`}
-      style={{ willChange: "transform" }}
-      // Keep a subtle continuous presence so it never looks static
-      animate={{
-        opacity: [1, 0.93, 1],
-      }}
-      transition={{
-        duration: 2.2,
-        repeat: Infinity,
-        ease: "easeInOut",
-      }}
-    >
+    <span className={`relative inline-block select-none ${className}`}>
       {/* base */}
       <span className="relative z-10 text-white">{children}</span>
 
@@ -325,13 +322,14 @@ export function GlitchText({
           animate={scan}
         />
       ) : null}
-    </motion.span>
+    </span>
   );
 }
 
 function Portfolio() {
   const sectionRef = useRef<HTMLDivElement | null>(null);
   const nextSectionRef = useRef<HTMLDivElement | null>(null);
+  const gridRef = useRef<HTMLDivElement | null>(null);
   const reduceMotion = useReducedMotion();
 
   useEffect(() => {
@@ -365,7 +363,7 @@ function Portfolio() {
         trigger: welcome,
         start: "top top",
         end: "bottom top",
-        scrub: 1.2,
+        scrub: 0.5,
         pin: true,
         anticipatePin: 1,
       },
@@ -374,7 +372,7 @@ function Portfolio() {
     tl.to(welcome, {
       scale: 1.3,
       opacity: 0,
-      ease: "power2.inOut",
+      ease: "none",
     });
 
     tl.to(
@@ -384,7 +382,7 @@ function Portfolio() {
         opacity: 1,
         zIndex: 100,
         pointerEvents: "auto",
-        ease: "power2.out",
+        ease: "none",
       },
       "<",
     );
@@ -392,6 +390,41 @@ function Portfolio() {
     return () => {
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
       gsap.killTweensOf([welcome, next]);
+    };
+  }, [reduceMotion]);
+
+  // Entrance stagger for the card group. Deliberately an IntersectionObserver
+  // rather than a ScrollTrigger: the hero above is pinned, and a ScrollTrigger
+  // created while that pin's spacer is still being inserted resolves its start
+  // against a stale document height and never fires. The observer reads live
+  // geometry, so the pin cannot throw it off.
+  useEffect(() => {
+    const grid = gridRef.current;
+    if (!grid || reduceMotion) return;
+
+    const cards = Array.from(grid.children);
+    gsap.set(cards, { opacity: 0, y: 12 });
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((e) => e.isIntersecting)) return;
+        observer.disconnect();
+        gsap.to(cards, {
+          opacity: 1,
+          y: 0,
+          duration: 0.3,
+          ease: "power2.out",
+          stagger: 0.06, // 60ms: inside the 30-80ms band, reads as one gesture
+        });
+      },
+      { threshold: 0.15 },
+    );
+    observer.observe(grid);
+
+    return () => {
+      observer.disconnect();
+      gsap.killTweensOf(cards);
+      gsap.set(cards, { clearProps: "opacity,transform" });
     };
   }, [reduceMotion]);
 
@@ -419,7 +452,7 @@ function Portfolio() {
             {/* The H1 is the strongest signal this page sends to both readers
                 and search engines, so it carries the name, not a greeting. */}
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight">
-              <GlitchText glitchEveryMs={1000} intensity="medium">
+              <GlitchText glitchEveryMs={8000} intensity="medium">
                 Michalis Bafaloukos
               </GlitchText>
             </h1>
@@ -465,7 +498,10 @@ function Portfolio() {
 
           <div className="w-full max-w-7xl px-4 md:px-8 lg:px-12 my-6">
             {/* CSS GRID: 1 column on mobile, 2 on tablet, 3 on desktop */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+            <div
+              ref={gridRef}
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
+            >
               {services.map((s) => (
                 <a
                   key={s.id}
@@ -474,18 +510,27 @@ function Portfolio() {
                 >
                   {/* 1. The Scrolling Mockup (Top Half) */}
                   <div className="w-full h-[280px] sm:h-[320px] relative overflow-hidden bg-gray-900">
-                    <div
+                    {/* The screenshot is far taller than its window, so the
+                        reveal slides the image itself. translateY composites on
+                        the GPU; the background-position this replaced repainted
+                        the whole image on every frame of a six-second hover.
+                        Percentages are relative to the image's own height, so
+                        -100% + the window height lands exactly on its bottom
+                        edge whatever the screenshot's proportions. */}
+                    <img
+                      src={s.image}
+                      alt={s.imageAlt}
+                      loading="lazy"
+                      decoding="async"
                       className={[
-                        "w-full h-full bg-cover bg-top bg-no-repeat",
-                        // Desktop hover scroll. The base duration is what plays
-                        // on hover-OUT, so the image snaps back instead of
-                        // crawling for six seconds; the long one only applies
-                        // while hovered.
-                        "md:transition-[background-position] md:duration-300 md:ease-out",
-                        "md:group-hover:bg-bottom md:group-hover:duration-[6000ms] md:group-hover:ease-in-out",
-                        // Mobile tap-and-hold scroll
-                        "active:bg-bottom active:transition-[background-position] active:duration-[4000ms] active:ease-in-out",
-                        s.imageClass,
+                        "absolute inset-x-0 top-0 w-full",
+                        // The base duration is what plays on release, so the
+                        // image returns in 300ms instead of crawling back.
+                        "transition-transform duration-300 ease-out",
+                        "md:group-hover:translate-y-[calc(-100%+320px)] md:group-hover:duration-[6000ms] md:group-hover:ease-in-out",
+                        // Touch: press and hold to scrub through the page.
+                        "active:translate-y-[calc(-100%+280px)] active:duration-[4000ms] active:ease-in-out",
+                        "sm:active:translate-y-[calc(-100%+320px)]",
                       ].join(" ")}
                     />
 

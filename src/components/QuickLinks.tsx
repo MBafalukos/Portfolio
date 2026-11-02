@@ -1,6 +1,33 @@
+import { useEffect, useRef, useState } from "react";
 import cvFile from "../assets/CV_MichalisBafaloukos_ENG.pdf";
 
 export default function QuickLinks() {
+  // A tooltip waits before appearing so a cursor passing over the rail does
+  // not fire one. Once the pointer has settled, the rest open instantly --
+  // the delay exists to filter out accidents, and after the first one there
+  // is no accident left to filter.
+  const [instant, setInstant] = useState(false);
+  const enterTimer = useRef<number | undefined>(undefined);
+  const leaveTimer = useRef<number | undefined>(undefined);
+
+  useEffect(
+    () => () => {
+      window.clearTimeout(enterTimer.current);
+      window.clearTimeout(leaveTimer.current);
+    },
+    [],
+  );
+
+  const onRailEnter = () => {
+    window.clearTimeout(leaveTimer.current);
+    enterTimer.current = window.setTimeout(() => setInstant(true), 300);
+  };
+
+  const onRailLeave = () => {
+    window.clearTimeout(enterTimer.current);
+    leaveTimer.current = window.setTimeout(() => setInstant(false), 400);
+  };
+
   const links = [
     {
       name: "GitHub",
@@ -92,6 +119,8 @@ export default function QuickLinks() {
 
   return (
     <div
+      onMouseEnter={onRailEnter}
+      onMouseLeave={onRailLeave}
       className="fixed z-50 flex
       /* MOBILE: Horizontal pill at the bottom center */
       bottom-6 left-1/2 -translate-x-1/2 flex-row 
@@ -113,7 +142,9 @@ export default function QuickLinks() {
           {link.icon}
 
           {/* Desktop Hover Tooltip (Hidden on Mobile) */}
-          <span className="absolute hidden 2xl:block left-full ml-4 px-2 py-1 bg-black/80 text-white text-xs font-medium rounded opacity-0 -translate-x-2 pointer-events-none group-hover:opacity-100 group-hover:translate-x-0 transition-[opacity,transform] duration-150 ease-out">
+          <span className={`absolute hidden 2xl:block left-full ml-4 px-2 py-1 bg-black/80 text-white text-xs font-medium rounded opacity-0 -translate-x-2 pointer-events-none group-hover:opacity-100 group-hover:translate-x-0 transition-[opacity,transform] duration-150 ease-out ${
+              instant ? "delay-0" : "delay-0 group-hover:delay-300"
+            }`}>
             {link.name}
           </span>
         </a>
