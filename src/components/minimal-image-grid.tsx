@@ -35,7 +35,7 @@ const services: Service[] = [
       "Strong typographic hierarchy",
       "Responsive on all devices",
     ],
-    imageClass: "bg-[url('./assets/NasiaScreenshot.png')]",
+    imageClass: "bg-[url('./assets/NasiaScreenshot.webp')]",
     link: "https://nasia-adam.com",
   },
   {
@@ -50,7 +50,7 @@ const services: Service[] = [
       "Strong call-to-action sections",
       "Responsive & performance-optimized",
     ],
-    imageClass: "bg-[url('./assets/DotheworkScreenshot.png')]",
+    imageClass: "bg-[url('./assets/DotheworkScreenshot.webp')]",
     link: "https://dotheworkintensive.com",
   },
   {
@@ -66,7 +66,7 @@ const services: Service[] = [
       "Product catalog & filtering system",
       "Responive on all devices",
     ],
-    imageClass: "bg-[url('./assets/GeorgantonisScreenshot.png')]",
+    imageClass: "bg-[url('./assets/GeorgantonisScreenshot.webp')]",
     link: "https://stolesergasias.gr",
   },
   {
@@ -82,7 +82,7 @@ const services: Service[] = [
       "Structured content hierarchy for clarity",
       "Self-hosted analytics dashboard ",
     ],
-    imageClass: "bg-[url('./assets/BrewcycleScreenshot.jpg')] bg-cover",
+    imageClass: "bg-[url('./assets/BrewcycleScreenshot.webp')] bg-cover",
     link: "https://brewcycle.at/",
   },
 ];
@@ -398,7 +398,7 @@ function Portfolio() {
         <div
           ref={sectionRef}
           // Changed to min-h-[100dvh] and w-full for better mobile handling and no horizontal scroll
-          className="relative flex min-h-[100dvh] w-full flex-col items-center justify-center overflow-hidden bg-[url('./assets/somebackground.jpg')] bg-cover bg-center bg-no-repeat font-Montserrat font-semibold z-10"
+          className="relative flex min-h-[100dvh] w-full flex-col items-center justify-center overflow-hidden bg-[url('./assets/somebackground.webp')] bg-cover bg-center bg-no-repeat font-Montserrat font-semibold z-10"
         >
           {/* Background overlays */}
           <div className="absolute inset-0 bg-black/50" />
