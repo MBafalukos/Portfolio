@@ -2,10 +2,11 @@ import { useEffect, useRef } from "react";
 import { motion, useAnimationControls, useReducedMotion } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import AOS from "aos";
 import type { PropsWithChildren } from "react";
-import "aos/dist/aos.css";
 import QuickLinks from "./QuickLinks";
+import SiteNav from "./SiteNav";
+import About from "./About";
+import Contact from "./Contact";
 import Marquee from "./Marquee";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -15,6 +16,8 @@ type Service = {
 
   title: string;
   subtitle?: string;
+  role: string;
+  stack: string[];
   description: string;
   bullets: string[];
   imageClass: string;
@@ -27,13 +30,14 @@ const services: Service[] = [
 
     title: "Digital Portfolio",
     subtitle: "nasia-adam.com",
-
+    role: "Design & build",
+    stack: ["React", "TypeScript", "Vite", "Tailwind"],
     description:
-      "A custom-designed digital portfolio created to showcase personal branding, visual identity, and creative work.",
+      "A portfolio for a dance instructor and choreographer, built to put her own visual identity first rather than a template's.",
     bullets: [
-      "Custom UI & layout design",
-      "Strong typographic hierarchy",
-      "Responsive on all devices",
+      "Bespoke layout, no theme underneath",
+      "Image-led hero kept light enough for mobile",
+      "Single page on her own domain",
     ],
     imageClass: "bg-[url('./assets/NasiaScreenshot.webp')]",
     link: "https://nasia-adam.com",
@@ -41,14 +45,16 @@ const services: Service[] = [
   {
     id: "do-the-work-bootcamp",
 
-    title: " Brand Landing Page & Registration ",
+    title: "Brand Landing Page & Registration",
     subtitle: "dotheworkintensive.com",
+    role: "Rebuild off WordPress",
+    stack: ["React", "TypeScript", "Vite", "Tailwind"],
     description:
-      "A high-impact landing page designed for the “Do The Work” intensive bootcamp.",
+      "A landing page for the “Do The Work” heels intensive, rebuilt from a WordPress site into a static front end.",
     bullets: [
-      "Conversion-oriented layout",
-      "Strong call-to-action sections",
-      "Responsive & performance-optimized",
+      "Migrated off WordPress to a static build",
+      "Registration flow for a dated, limited-seat course",
+      "Structured around one clear call to action",
     ],
     imageClass: "bg-[url('./assets/DotheworkScreenshot.webp')]",
     link: "https://dotheworkintensive.com",
@@ -57,14 +63,15 @@ const services: Service[] = [
     id: "eshop-stolesergasias",
 
     title: "E-Commerce",
-
     subtitle: "stolesergasias.gr",
+    role: "Maintenance & platform migration",
+    stack: ["WooCommerce", "ASP.NET Core", "Angular", "Postgres"],
     description:
-      "A full-featured e-shop , focused on usability, and a seamless shopping experience. ",
+      "A work-uniform e-shop running on WooCommerce, which I maintain while moving it onto a platform I can actually tune.",
     bullets: [
-      "Optimized for SEO and performance",
-      "Product catalog & filtering system",
-      "Responive on all devices",
+      "Product catalogue with filtering across sizes and trades",
+      "Card payments through Nexi, plus cash on delivery",
+      "Mid-migration to ASP.NET Core and Angular SSR",
     ],
     imageClass: "bg-[url('./assets/GeorgantonisScreenshot.webp')]",
     link: "https://stolesergasias.gr",
@@ -72,15 +79,16 @@ const services: Service[] = [
   {
     id: "Brewcycle",
 
-    title: "Brand Landing Page & Dashboard Analytics",
-    subtitle: "brewcycle.at ",
-
+    title: "Landing Page & Analytics Dashboard",
+    subtitle: "brewcycle.at",
+    role: "Full-stack build",
+    stack: ["Next.js", "Supabase", "Prisma", "Recharts"],
     description:
-      "A brand-focused landing page designed for a sustainability-driven startup.",
+      "A marketing site for a sustainability startup, plus a private dashboard so the team can read their own traffic without a third-party tool.",
     bullets: [
-      "Responsive design with performance optimization",
-      "Structured content hierarchy for clarity",
-      "Self-hosted analytics dashboard ",
+      "Public landing page and an authenticated dashboard",
+      "Metrics pulled from the Google Analytics Data API",
+      "Postgres through Supabase and Prisma, hosted on Vercel",
     ],
     imageClass: "bg-[url('./assets/BrewcycleScreenshot.webp')] bg-cover",
     link: "https://brewcycle.at/",
@@ -322,10 +330,6 @@ export function GlitchText({
 }
 
 function Portfolio() {
-  useEffect(() => {
-    AOS.init();
-  }, []);
-
   const sectionRef = useRef<HTMLDivElement | null>(null);
   const nextSectionRef = useRef<HTMLDivElement | null>(null);
   const reduceMotion = useReducedMotion();
@@ -393,7 +397,8 @@ function Portfolio() {
 
   return (
     <div className="flex flex-col relative overflow-x-hidden items-center">
-      <div className="relative w-screen overflow-hidden bg-black">
+      <SiteNav />
+      <main className="relative w-screen overflow-hidden bg-black">
         {/* WELCOME / HERO */}
         <div
           ref={sectionRef}
@@ -438,14 +443,19 @@ function Portfolio() {
           </div>
         </div>
 
-        {/* NEXT SECTION (SERVICES + CONTACT) */}
-        <div
+        {/* PROJECTS */}
+        <section
+          id="projects"
+          aria-labelledby="projects-heading"
           ref={nextSectionRef}
-          className="flex flex-col items-center w-full min-h-screen font-semibold bg-transparent py-12"
+          className="flex flex-col items-center w-full min-h-screen scroll-mt-24 font-semibold bg-transparent py-12"
         >
           {/* --- NEW PROJECTS HEADER --- */}
           <div className="w-full mb-12 px-4 flex flex-col items-start md:items-center md:text-center">
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 tracking-tight">
+            <h2
+              id="projects-heading"
+              className="text-4xl md:text-5xl font-bold text-white mb-4 tracking-tight"
+            >
               Selected <span className="text-[#EE7319]">Projects</span>
             </h2>
             <p className="text-white/60 text-base md:text-lg font-light max-w-2xl font-Manrope">
@@ -495,9 +505,26 @@ function Portfolio() {
                       </p>
                     )}
 
-                    <p className="text-white/60 text-sm leading-relaxed font-light mb-6 flex-1">
+                    {/* What I actually did on it, and what it is built with:
+                        the two questions a card like this has to answer. */}
+                    <p className="mb-3 text-xs font-light uppercase tracking-[0.15em] text-white/40">
+                      {s.role}
+                    </p>
+
+                    <p className="text-white/60 text-sm leading-relaxed font-light mb-5 flex-1">
                       {s.description}
                     </p>
+
+                    <ul className="mb-5 flex flex-wrap gap-1.5">
+                      {s.stack.map((t) => (
+                        <li
+                          key={t}
+                          className="rounded border border-white/10 bg-white/5 px-2 py-0.5 text-[11px] font-light text-white/70"
+                        >
+                          {t}
+                        </li>
+                      ))}
+                    </ul>
 
                     {/* Bullets section pushed to the bottom */}
                     {s.bullets && s.bullets.length > 0 && (
@@ -521,10 +548,20 @@ function Portfolio() {
               ))}
             </div>
           </div>
-        </div>
+        </section>
+
+        <About />
+        <Contact />
+
+        <footer className="w-full border-t border-white/10 px-4 pb-28 pt-8 md:px-8 lg:px-12 2xl:pb-8">
+          <div className="mx-auto flex w-full max-w-7xl flex-col items-start justify-between gap-2 font-Manrope text-xs font-light text-white/40 sm:flex-row sm:items-center">
+            <span>&copy; {new Date().getFullYear()} Michalis Bafaloukos</span>
+            <span>Athens, Greece</span>
+          </div>
+        </footer>
 
         <QuickLinks />
-      </div>
+      </main>
     </div>
   );
 }

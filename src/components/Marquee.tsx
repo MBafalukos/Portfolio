@@ -1,17 +1,14 @@
-import {
-  FaHtml5,
-  FaDatabase,
-  FaWordpress,
-  FaAws,
-  FaPython,
-} from "react-icons/fa";
+import { FaReact, FaWordpress, FaPython } from "react-icons/fa";
+import { SiTypescript, SiNextdotjs, SiTailwindcss } from "react-icons/si";
 
 export default function Marquee() {
+  // These are the tools the four projects below are actually built with.
   const techStack = [
-    { name: "HTML", icon: FaHtml5 },
-    { name: "SQL", icon: FaDatabase },
+    { name: "React", icon: FaReact },
+    { name: "TypeScript", icon: SiTypescript },
+    { name: "Next.js", icon: SiNextdotjs },
+    { name: "Tailwind", icon: SiTailwindcss },
     { name: "WordPress", icon: FaWordpress },
-    { name: "Cloud", icon: FaAws },
     { name: "Python", icon: FaPython },
   ];
 
@@ -24,7 +21,10 @@ export default function Marquee() {
   ];
 
   return (
-    <div className="absolute bottom-24 left-0 right-0 w-full overflow-hidden py-5 flex ">
+    <div
+      aria-hidden="true"
+      className="absolute bottom-24 left-0 right-0 w-full overflow-hidden py-5 flex "
+    >
       {/* 2. Plain CSS animation (see .animate-marquee in index.css) rather than
           framer-motion's x prop: this loop never stops and never gets
           interrupted, so it belongs off the main thread. Shifting by -50%

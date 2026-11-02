@@ -76,9 +76,9 @@ export default function QuickLinks() {
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         >
           <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
           <polyline points="14 2 14 8 20 8" />
@@ -95,8 +95,10 @@ export default function QuickLinks() {
       className="fixed z-50 flex
       /* MOBILE: Horizontal pill at the bottom center */
       bottom-6 left-1/2 -translate-x-1/2 flex-row 
-      /* DESKTOP: Vertical pill on the middle left */
-      md:bottom-auto md:top-1/2 md:-translate-y-1/2 md:left-6 md:flex-col md:translate-x-0
+      /* DESKTOP: vertical pill on the middle left, but only from 2xl up.
+         Below 1536px the page content reaches past the rail and it sat on
+         top of the text, so everything narrower keeps the bottom pill. */
+      2xl:bottom-auto 2xl:top-1/2 2xl:-translate-y-1/2 2xl:left-6 2xl:flex-col 2xl:translate-x-0
       gap-4 p-3 bg-white/5 border border-white/10 backdrop-blur-md rounded-full shadow-2xl"
     >
       {links.map((link) => (
@@ -111,7 +113,7 @@ export default function QuickLinks() {
           {link.icon}
 
           {/* Desktop Hover Tooltip (Hidden on Mobile) */}
-          <span className="absolute hidden md:block left-full ml-4 px-2 py-1 bg-black/80 text-white text-xs font-medium rounded opacity-0 -translate-x-2 pointer-events-none group-hover:opacity-100 group-hover:translate-x-0 transition-[opacity,transform] duration-150 ease-out">
+          <span className="absolute hidden 2xl:block left-full ml-4 px-2 py-1 bg-black/80 text-white text-xs font-medium rounded opacity-0 -translate-x-2 pointer-events-none group-hover:opacity-100 group-hover:translate-x-0 transition-[opacity,transform] duration-150 ease-out">
             {link.name}
           </span>
         </a>
